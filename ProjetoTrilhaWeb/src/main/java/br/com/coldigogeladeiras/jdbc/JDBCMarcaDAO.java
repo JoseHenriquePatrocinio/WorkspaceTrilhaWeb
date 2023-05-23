@@ -1,16 +1,16 @@
 package br.com.coldigogeladeiras.jdbc;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import br.com.coldigogeladeiras.jdbcinterface.MarcaDAO;
 import br.com.coldigogeladeiras.modelo.Marca;
+
 import java.util.List;
 import java.util.ArrayList;
 
 
-//	implementa a interface MarcaDAO, que é responsável por definir o contrato para operações de acesso a dados da tabela marcas 
-// 	faz uma consulta sql que traz as marcas e tranforma os dados em objetos para por na lista
-//	separa a lógica de acesso a dados
 
 public class JDBCMarcaDAO implements MarcaDAO {
 	
@@ -48,6 +48,28 @@ public class JDBCMarcaDAO implements MarcaDAO {
 		}
 		
 		return listMarcas;
+	}
+	
+	public boolean inserir(Marca marca) {
+		String comando = "INSERT INTO marcas" + "(id, nome, data)"
+				+ "VALUES(?,?,?)";
+
+		PreparedStatement p;
+
+		try {
+
+			p = this.conexao.prepareStatement(comando);
+			p.setInt(1, marca.getId());
+			p.setString(2, marca.getNome());
+			p.setString(3, marca.getData());
+
+			p.execute();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
 	}
 
 }

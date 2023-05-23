@@ -2,16 +2,13 @@ package br.com.coldigogeladeiras.modelo;
 import java.io.Serializable;
 
 
-//	Aqui foi feito os getters and setters da tabela 'marcas' do banco de dados
-//	A implementação dessa interface permite que objetos da classe Marca sejam 
-//	convertidos em uma sequência de bytes, que podem ser armazenados pela rede
-
 public class Marca implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private int id;
 	private String nome;
+	private String data;
 	
 	public int getId() {
 		return id;
@@ -25,5 +22,13 @@ public class Marca implements Serializable {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+	public String getData() {
+		return data;
+	}
+	public void setData(String data) {
+		this.data = data;
+	}
+	
+	
 	
 }
