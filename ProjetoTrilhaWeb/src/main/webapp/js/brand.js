@@ -107,7 +107,70 @@ $(document).ready(function() {
 				COLDIGO.marca.buscar();
 			},
 			error: function(info){
-				COLDIGO.exibirAviso("Erro ao excluir produto: " + info.status + " - " + info.statusText);
+				COLDIGO.exibirAviso("Erro ao excluir marca: " + info.status + " - " + info.statusText);
+			}
+		});
+	};
+	
+	
+		COLDIGO.marca.exibirEdicao = function(id){
+		$.ajax({
+			type:"GET",
+			url: COLDIGO.PATH + "marca/buscarPorId",
+			data: "id="+id,
+			success: function(marca){
+				
+				console.log(marca);
+				document.frmEditaMarca.idMarca.value = marca.id;
+				document.frmEditaMarca.nome.value = marca.nome;
+				document.frmEditaMarca.data.value = marca.data;
+	
+				
+				var modalEditaMarca = {
+					title: "Editar Marca",
+					height: 400,
+					width: 550,
+					modal: true,
+					buttons:{
+						"Salvar": function(){
+							COLDIGO.marca.editar();
+						},
+						"Cancelar": function(){
+							$(this).dialog("close");
+						}
+					},
+					close: function(){
+						//empty
+					}
+				};
+				
+				$("#modalEditaMarca").dialog(modalEditaMarca);
+				
+			},
+			error: function(info){
+				COLDIGO.exibirAviso("Erro ao buscar marca para edição: " + info.status + " - " + info.statusText);
+			}
+		});
+	};
+	
+		COLDIGO.marca.editar = function(){
+		var marca = new Object();
+		marca.id = document.frmEditaMarca.idMarca.value;
+		marca.nome = document.frmEditaMarca.nome.value;
+		marca.data = document.frmEditaMarca.data.value;
+
+		
+		$.ajax({
+			type:"PUT",
+			url: COLDIGO.PATH + "marca/alterar",
+			data:JSON.stringify(marca),
+			success: function(msg){
+				COLDIGO.exibirAviso(msg);
+				COLDIGO.marca.buscar();
+				$("#modalEditaMarca").dialog("close");
+			},
+			error: function(info){
+				COLDIGO.exibirAviso("Erro ao editar marca: "+ info.status + " - " + info.statusText);
 			}
 		});
 	};

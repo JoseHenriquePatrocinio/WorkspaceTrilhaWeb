@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import br.com.coldigogeladeiras.jdbcinterface.MarcaDAO;
 import br.com.coldigogeladeiras.modelo.Marca;
+import br.com.coldigogeladeiras.modelo.Produto;
 
 import java.util.List;
 
@@ -119,6 +120,49 @@ public class JDBCMarcaDAO implements MarcaDAO {
 			p = this.conexao.prepareStatement(comando);
 			p.setInt(1, id);
 			p.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+	
+	public Marca buscarPorId(int id) {
+		String comando = "SELECT * FROM marcas WHERE marcas.id = ?";
+		Marca marca = new Marca();
+		try {
+			PreparedStatement p = this.conexao.prepareStatement(comando);
+			p.setInt(1, id);
+			ResultSet rs = p.executeQuery();
+			while (rs.next()) {
+
+				String nome = rs.getString("nome");
+				String data = rs.getString("data");
+
+
+				marca.setId(id);
+				marca.setNome(nome);
+				marca.setData(data);
+
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return marca;
+	}
+	
+	public boolean alterar(Marca marca) {
+		String comando = "UPDATE marcas " + "SET nome=?, data=?"
+				+ " WHERE id=?";
+		PreparedStatement p;
+
+		try {
+			p = this.conexao.prepareStatement(comando);
+			p.setString(1, marca.getNome());
+			p.setString(2, marca.getData());
+			p.setInt(3, marca.getId());
+			p.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
