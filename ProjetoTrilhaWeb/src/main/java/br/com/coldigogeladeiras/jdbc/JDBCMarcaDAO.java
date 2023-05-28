@@ -75,5 +75,41 @@ public class JDBCMarcaDAO implements MarcaDAO {
 		return true;
 	}
 	
+	public List<JsonObject> buscarPorMarca(String nome) {
+
+		String comando = "SELECT * FROM marcas ";
+
+		if (!nome.equals("")) {
+			comando += "WHERE nome LIKE '%" + nome + "%'";
+		}
+
+		List<JsonObject> listaMarcas = new ArrayList<JsonObject>();
+		JsonObject marca = null;
+
+		try {
+			Statement stmt = conexao.createStatement();
+			ResultSet rs = stmt.executeQuery(comando);
+
+			while (rs.next()) {
+
+				int id = rs.getInt("id");
+				String nomeMarca = rs.getString("nome");
+				String data = rs.getString("data");
+
+				marca = new JsonObject();
+				//marca.addProperty("id", id);
+				marca.addProperty("nomeMarca", nomeMarca);
+				marca.addProperty("data", data);
+
+
+				listaMarcas.add(marca);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return listaMarcas;
+	}
+	
 
 }
