@@ -13,7 +13,6 @@ $(document).ready(function() {
 			select = "#selMarca";
 		}
 		
-		alert("testando script");
 		$.ajax({
 			type: "GET",
 			url: COLDIGO.PATH + "marca/buscar",

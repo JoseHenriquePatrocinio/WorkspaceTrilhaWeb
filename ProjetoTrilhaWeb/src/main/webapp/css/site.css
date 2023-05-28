@@ -155,4 +155,11 @@ tr:nth-child(odd){
 	font-weight:bold;
 	font-size:16px;
 }
+.button {
+  float:right;
+  padding: 10px 20px;
+  background-color: #b1ccf5;
+  color: white;
+  font-size: 16px;
+}
 
