@@ -44,7 +44,7 @@ $(document).ready(function() {
 			data: "valorBusca="+valorBusca,
 			success:function(dados){
 				
-				alert(dados)
+				console.log(dados);
 				dados = JSON.parse(dados);
 				
 				/*!!!!!!!!!!!*/
@@ -77,11 +77,12 @@ $(document).ready(function() {
 				tabela += "<tr>" + 
 				
 				"<td>"+listaDeMarcas[i].nomeMarca+"</td>"+
-				"<td>"+listaDeMarcas[i].data+"</td>"
-/*				"<a onclick=\"COLDIGO.marca.exibirEdicao('"+listaDeMarcas[i].id+"')\"><img src='../../imgs/edit.png' alt='Editar registro'></a> " +
+				"<td>"+listaDeMarcas[i].data+"</td>"+
+				"<td>"+
+			    "<a onclick=\"COLDIGO.marca.exibirEdicao('"+listaDeMarcas[i].id+"')\"><img src='../../imgs/edit.png' alt='Editar registro'></a> " +
 				"<a onclick=\"COLDIGO.marca.excluir('"+listaDeMarcas[i].id+"')\"><img src='../../imgs/delete.png' alt='Excluir registro'></a>" +
 				"</td>"+
-				"</tr>"*/
+				"</tr>"
 			}
 				
 			
@@ -97,7 +98,19 @@ $(document).ready(function() {
 	
 	COLDIGO.marca.buscar();
 	
-	
+		COLDIGO.marca.excluir = function(id){
+		$.ajax({
+			type:"DELETE",
+			url: COLDIGO.PATH + "marca/excluir/"+id,
+			success: function(msg){
+				COLDIGO.exibirAviso(msg);
+				COLDIGO.marca.buscar();
+			},
+			error: function(info){
+				COLDIGO.exibirAviso("Erro ao excluir produto: " + info.status + " - " + info.statusText);
+			}
+		});
+	};
 	
 
 });

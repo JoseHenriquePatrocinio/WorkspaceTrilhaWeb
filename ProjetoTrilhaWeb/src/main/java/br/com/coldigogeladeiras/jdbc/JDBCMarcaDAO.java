@@ -97,7 +97,7 @@ public class JDBCMarcaDAO implements MarcaDAO {
 				String data = rs.getString("data");
 
 				marca = new JsonObject();
-				//marca.addProperty("id", id);
+				marca.addProperty("id", id);
 				marca.addProperty("nomeMarca", nomeMarca);
 				marca.addProperty("data", data);
 
@@ -111,5 +111,19 @@ public class JDBCMarcaDAO implements MarcaDAO {
 		return listaMarcas;
 	}
 	
+	public boolean deletar(int id) {
+		String comando = "DELETE FROM marcas WHERE id = ?";
+
+		PreparedStatement p;
+		try {
+			p = this.conexao.prepareStatement(comando);
+			p.setInt(1, id);
+			p.execute();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
 
 }
