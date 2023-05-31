@@ -100,8 +100,8 @@ $(document).ready(function() {
 					COLDIGO.exibirAviso(msg);
 					$("#addProduto").trigger("reset");
 				},
-				error: function(info) {
-					COLDIGO.exibirAviso("Erro ao cadastrar um novo produto: " + info.status + "-" + info.statusText);
+				error: function() {
+					COLDIGO.exibirAviso(msg);
 				}
 			});
 		}
@@ -196,8 +196,8 @@ $(document).ready(function() {
 					/* refetch the list to update it */
 					COLDIGO.produto.buscar();
 				},
-				error: function(info) {
-					COLDIGO.exibirAviso("Erro ao excluir produto: " + info.status + " - " + info.statusText);
+				error: function() {
+					COLDIGO.exibirAviso(msg);
 				}
 			});
 		}
@@ -272,8 +272,8 @@ $(document).ready(function() {
 				COLDIGO.produto.buscar();
 				$("#modalEditaProduto").dialog("close");
 			},
-			error: function(info) {
-				COLDIGO.exibirAviso("Erro ao editar produto: " + info.status + " - " + info.statusText);
+			error: function() {
+				COLDIGO.exibirAviso(msg);
 			}
 		});
 	};

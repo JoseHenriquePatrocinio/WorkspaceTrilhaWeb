@@ -8,7 +8,6 @@ import java.sql.Statement;
 import br.com.coldigogeladeiras.jdbcinterface.MarcaDAO;
 import br.com.coldigogeladeiras.modelo.Marca;
 
-
 import java.util.List;
 
 import com.google.gson.JsonObject;
@@ -157,6 +156,24 @@ public class JDBCMarcaDAO implements MarcaDAO {
 			p.setString(2, marca.getData());
 			p.setInt(3, marca.getId());
 			p.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+		return true;
+	}
+
+	public boolean inativar(int id) {
+		 String comando = "UPDATE marcas " + "SET status = CASE WHEN status = 0 THEN 1 ELSE 0 END" + " WHERE id = ?";
+		
+
+		PreparedStatement p;
+		try {
+
+			p = conexao.prepareStatement(comando);
+			p.setInt(1, id);
+			p.executeUpdate();
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;

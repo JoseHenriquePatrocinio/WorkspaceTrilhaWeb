@@ -25,8 +25,8 @@ $(document).ready(function() {
 					COLDIGO.exibirAviso(msg);
 					$("#addMarca").trigger("reset");
 				},
-				error: function(info) {
-					COLDIGO.exibirAviso("Erro ao cadastrar uma nova marca: " + info.status + "-" + info.statusText);
+				error: function() {
+					COLDIGO.exibirAviso(msg);
 				}
 			});
 		}
@@ -69,14 +69,18 @@ $(document).ready(function() {
 			"<th>Nome</th>" +
 			"<th>Data</th>" +
 			"<th class='acoes'>Ações</th>" +
-			"<th>Status</th>" +
+			"<th class='acoes'>Status</th>" +
 			"</tr>";
 
 		if (listaDeMarcas != undefined && listaDeMarcas.length > 0) {
 
 			for (var i = 0; i < listaDeMarcas.length; i++) {
-				tabela += "<tr>" +
+				var checkbox = "<input type='checkbox' onclick=\"COLDIGO.marca.inativar('" + listaDeMarcas[i].id + "')\"/>";
+				if (listaDeMarcas[i].status == 1) {
+					checkbox = "<input type='checkbox' checked onclick=\"COLDIGO.marca.inativar('" + listaDeMarcas[i].id + "')\"/>";
+				}
 
+				tabela += "<tr>" +
 					"<td>" + listaDeMarcas[i].nomeMarca + "</td>" +
 					"<td>" + listaDeMarcas[i].data + "</td>" +
 					"<td>" +
@@ -85,7 +89,7 @@ $(document).ready(function() {
 					"</td>" +
 					"<td>" +
 					"<label class='switch'>" +
-					"<input type='checkbox' " + (listaDeMarcas[i].status == 1 ? "checked" : "") + ">" +
+					checkbox +
 					"<span class='slider round'></span>" +
 					"</label>" +
 					"</td>" +
@@ -110,8 +114,8 @@ $(document).ready(function() {
 					COLDIGO.exibirAviso(msg);
 					COLDIGO.marca.buscar();
 				},
-				error: function(info) {
-					COLDIGO.exibirAviso("Erro ao excluir marca: " + info.status + " - " + info.statusText);
+				error: function() {
+					COLDIGO.exibirAviso(msg);
 				}
 			});
 		}
@@ -174,11 +178,27 @@ $(document).ready(function() {
 				COLDIGO.marca.buscar();
 				$("#modalEditaMarca").dialog("close");
 			},
-			error: function(info) {
-				COLDIGO.exibirAviso("Erro ao editar marca: " + info.status + " - " + info.statusText);
+			error: function() {
+				COLDIGO.exibirAviso(msg);
 			}
 		});
 	};
-	
+
+	COLDIGO.marca.inativar = function(id) {
+		$.ajax({
+
+			type: "PUT",
+			url: COLDIGO.PATH + "marca/inativar/" + id,
+			success: function(msg) {
+				COLDIGO.exibirAviso(msg);
+				COLDIGO.marca.buscar();
+			},
+			error: function() {
+				COLDIGO.exibirAviso(msg);
+			}
+		});
+
+	};
+
 
 });
