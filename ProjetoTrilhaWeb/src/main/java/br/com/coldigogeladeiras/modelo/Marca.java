@@ -9,6 +9,7 @@ public class Marca implements Serializable {
 	private int id;
 	private String nome;
 	private String data;
+	private int status;
 	
 	public int getId() {
 		return id;
@@ -27,6 +28,12 @@ public class Marca implements Serializable {
 	}
 	public void setData(String data) {
 		this.data = data;
+	}
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
 	}
 	
 	

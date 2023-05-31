@@ -1,4 +1,5 @@
 package br.com.coldigogeladeiras.jdbc;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -6,7 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import br.com.coldigogeladeiras.jdbcinterface.MarcaDAO;
 import br.com.coldigogeladeiras.modelo.Marca;
-import br.com.coldigogeladeiras.modelo.Produto;
+
 
 import java.util.List;
 
@@ -14,29 +15,27 @@ import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
-
-
 public class JDBCMarcaDAO implements MarcaDAO {
-	
+
 	private Connection conexao;
-	
+
 	public JDBCMarcaDAO(Connection conexao) {
 		this.conexao = conexao;
 	}
-	
-	public List<Marca> buscar(){
-		
+
+	public List<Marca> buscar() {
+
 		String comando = "SELECT * FROM marcas";
 		List<Marca> listMarcas = new ArrayList<Marca>();
 		Marca marca = null;
-		
+
 		try {
-			
+
 			Statement stmt = conexao.createStatement();
-			
+
 			ResultSet rs = stmt.executeQuery(comando);
-			
-			while(rs.next()) {
+
+			while (rs.next()) {
 				marca = new Marca();
 				int id = rs.getInt("id");
 				String nome = rs.getString("nome");
@@ -44,19 +43,16 @@ public class JDBCMarcaDAO implements MarcaDAO {
 				marca.setNome(nome);
 				listMarcas.add(marca);
 			}
-			
-			
-			
-		}catch (Exception ex) {
+
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
-		
+
 		return listMarcas;
 	}
-	
+
 	public boolean inserir(Marca marca) {
-		String comando = "INSERT INTO marcas" + "(id, nome, data)"
-				+ "VALUES(?,?,?)";
+		String comando = "INSERT INTO marcas" + "(id, nome, data)" + "VALUES(?,?,?)";
 
 		PreparedStatement p;
 
@@ -75,7 +71,7 @@ public class JDBCMarcaDAO implements MarcaDAO {
 		}
 		return true;
 	}
-	
+
 	public List<JsonObject> buscarPorMarca(String nome) {
 
 		String comando = "SELECT * FROM marcas ";
@@ -96,12 +92,13 @@ public class JDBCMarcaDAO implements MarcaDAO {
 				int id = rs.getInt("id");
 				String nomeMarca = rs.getString("nome");
 				String data = rs.getString("data");
+				String status = rs.getString("status");
 
 				marca = new JsonObject();
 				marca.addProperty("id", id);
 				marca.addProperty("nomeMarca", nomeMarca);
 				marca.addProperty("data", data);
-
+				marca.addProperty("status", status);
 
 				listaMarcas.add(marca);
 			}
@@ -111,7 +108,7 @@ public class JDBCMarcaDAO implements MarcaDAO {
 		}
 		return listaMarcas;
 	}
-	
+
 	public boolean deletar(int id) {
 		String comando = "DELETE FROM marcas WHERE id = ?";
 
@@ -126,7 +123,7 @@ public class JDBCMarcaDAO implements MarcaDAO {
 		}
 		return true;
 	}
-	
+
 	public Marca buscarPorId(int id) {
 		String comando = "SELECT * FROM marcas WHERE marcas.id = ?";
 		Marca marca = new Marca();
@@ -139,11 +136,9 @@ public class JDBCMarcaDAO implements MarcaDAO {
 				String nome = rs.getString("nome");
 				String data = rs.getString("data");
 
-
 				marca.setId(id);
 				marca.setNome(nome);
 				marca.setData(data);
-
 
 			}
 		} catch (Exception e) {
@@ -151,10 +146,9 @@ public class JDBCMarcaDAO implements MarcaDAO {
 		}
 		return marca;
 	}
-	
+
 	public boolean alterar(Marca marca) {
-		String comando = "UPDATE marcas " + "SET nome=?, data=?"
-				+ " WHERE id=?";
+		String comando = "UPDATE marcas " + "SET nome=?, data=?" + " WHERE id=?";
 		PreparedStatement p;
 
 		try {
